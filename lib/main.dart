@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:apivideo_live_stream/apivideo_live_stream.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const VideoStreamApp());
@@ -30,7 +33,7 @@ class VideoStreamApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      home: const StreamPage(),
     );
   }
 }
@@ -54,7 +57,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -79,12 +81,83 @@ class _HomePageState extends State<HomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-
-          ],
+          children: <Widget>[],
         ),
       ),
-
     );
   }
 }
+
+class StreamPage extends StatefulWidget {
+  const StreamPage({super.key});
+
+  @override
+  State<StreamPage> createState() => _StreamPageState();
+}
+
+class _StreamPageState extends State<StreamPage> {
+  final _controller = ApiVideoLiveStreamController(
+    initialAudioConfig: AudioConfig(),
+    initialVideoConfig: VideoConfig.withDefaultBitrate(),
+  );
+  bool _isStreaming = false;
+  bool _isReady = false;
+
+  final _rtmpUrl = 'rtmp://10.0.2.2:1935/stream';
+
+  @override
+  void initState() {
+    super.initState();
+    _initCamera();
+  }
+
+  Future<void> _initCamera() async {
+    await [Permission.camera, Permission.microphone].request();
+    await _controller.initialize();
+    setState(() => _isReady = true);
+  }
+
+  Future<void> _toggleStream() async {
+    if (_isStreaming) {
+      await _controller.stopStreaming();
+    } else {
+      await _controller.startStreaming(streamKey: "abc", url: _rtmpUrl);
+    }
+    setState(() => _isStreaming = !_isStreaming);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Flutter Live Stream')),
+      body: !_isReady
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                ApiVideoCameraPreview(controller: _controller),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: FloatingActionButton.extended(
+                      onPressed: _toggleStream,
+                      label: Text(
+                        _isStreaming ? 'Stop Streaming' : 'Start Streaming',
+                      ),
+                      icon: Icon(_isStreaming ? Icons.stop : Icons.videocam),
+                      backgroundColor: _isStreaming ? Colors.red : Colors.green,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+}
+
