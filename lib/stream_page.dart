@@ -30,7 +30,7 @@ class _StreamPageState extends State<StreamPage> {
   Future<void> _loadRtmpUrl() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _rtmpUrl = prefs.getString('rtmp_url') ?? 'rtmp://10.0.2.2:1935/stream';
+      _rtmpUrl = prefs.getString('rtmp_url') ?? 'rtmp://10.0.2.2:1935/live';
     });
   }
 
@@ -53,7 +53,7 @@ class _StreamPageState extends State<StreamPage> {
         return;
       }
       else {
-        await _controller.startStreaming(streamKey: "abc", url: _rtmpUrl!);
+        await _controller.startStreaming(streamKey: "index", url: _rtmpUrl!);
       }
     }
     setState(() => _isStreaming = !_isStreaming);

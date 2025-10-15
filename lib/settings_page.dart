@@ -19,7 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _loadSavedUrl() async {
     final prefs = await SharedPreferences.getInstance();
-    _controller.text = prefs.getString('rtmp_url') ?? 'rtmp://10.0.2.2:1935/stream';
+    _controller.text = prefs.getString('rtmp_url') ?? 'rtmp://10.0.2.2:1935/live';
   }
 
   Future<void> _saveUrl() async {
@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
               controller: _controller,
               decoration: const InputDecoration(
                 labelText: 'RTMP Server URL',
-                hintText: 'e.g. rtmp://0.tcp.ngrok.io:18723/stream/test',
+                hintText: 'e.g. rtmp://0.tcp.ngrok.io:18723/live',
                 border: OutlineInputBorder(),
               ),
             ),
