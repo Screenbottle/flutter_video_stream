@@ -13,7 +13,12 @@ class StreamPage extends StatefulWidget {
 class _StreamPageState extends State<StreamPage> {
   final _controller = ApiVideoLiveStreamController(
     initialAudioConfig: AudioConfig(),
-    initialVideoConfig: VideoConfig.withDefaultBitrate(),
+    initialVideoConfig: VideoConfig(
+      bitrate: 2000 * 1000, // 2 Mbps
+      resolution: Resolution.RESOLUTION_720,
+      fps: 30,
+      
+    ),
   );
   bool _isStreaming = false;
   bool _isReady = false;
