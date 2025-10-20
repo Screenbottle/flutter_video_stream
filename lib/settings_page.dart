@@ -18,8 +18,7 @@ class _SettingsPageState extends State<SettingsPage> {
   final List<Map<String, String>> _presets = [
     {'label': 'Local Emulator (Android)', 'value': 'rtmp://10.0.2.2:1935/live'},
     {'label': 'Local Emulator (iOS)', 'value': 'rtmp://127.0.0.1:1935/live'},
-    {'label': 'Local Network', 'value': 'rtmp://192.168.1.100:1935/live'},
-    {'label': 'Ngrok Tunnel', 'value': 'rtmp://0.tcp.ngrok.io:18723/live'},
+    {'label': 'Local Network', 'value': 'rtmp://192.168.0.30:1935/live'},
     {'label': 'Custom', 'value': ''},
   ];
 
