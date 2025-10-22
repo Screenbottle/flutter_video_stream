@@ -25,11 +25,13 @@ class _StreamPageState extends State<StreamPage> {
   bool _isReady = false;
 
   String? _rtmpUrl;
+  String? _streamKey;
 
   @override
   void initState() {
     super.initState();
     _loadRtmpUrl();
+    _loadStreamKey();
     _initCamera();
   }
 
@@ -38,6 +40,14 @@ class _StreamPageState extends State<StreamPage> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _rtmpUrl = prefs.getString('rtmp_url') ?? 'rtmp://10.0.2.2:1935/live';
+    });
+  }
+
+  // loads the streamkey from shared preferences
+  Future<void> _loadStreamKey() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _streamKey = prefs.getString('rtmp_stream_key') ?? 'index';
     });
   }
 
@@ -60,7 +70,7 @@ class _StreamPageState extends State<StreamPage> {
         }
         return;
       } else {
-        await _controller.startStreaming(streamKey: "index", url: _rtmpUrl!);
+        await _controller.startStreaming(streamKey: _streamKey!, url: _rtmpUrl!);
       }
     }
     setState(() => _isStreaming = !_isStreaming);
@@ -138,6 +148,16 @@ class _StreamPageState extends State<StreamPage> {
                                 _isStreaming
                                     ? 'Streaming to: $_rtmpUrl'
                                     : 'Ready to start streaming',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                              ),
+                              Text(
+                                _isStreaming
+                                    ? 'Stream Key: $_streamKey'
+                                    : 'No Stream Key Set',
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
