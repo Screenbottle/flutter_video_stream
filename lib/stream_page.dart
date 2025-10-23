@@ -155,9 +155,7 @@ class _StreamPageState extends State<StreamPage> {
                                     ),
                               ),
                               Text(
-                                _isStreaming
-                                    ? 'Stream Key: $_streamKey'
-                                    : 'No Stream Key Set',
+                                'Stream Key: $_streamKey',
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
