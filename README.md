@@ -63,6 +63,7 @@ Projektet ligger fördelat i 3 repositories:
     ```
 
 2.  **Installera beroenden:**
+
     **Flutter**
     ```bash
     flutter pub get
@@ -139,10 +140,11 @@ Contributions are welcome! Please submit a pull request with your proposed chang
 
 ## Lärdomar
 
-- Kamerhantering i Flutter
-- Användning av Docker, konfigurering av Nginx
+- Kamerahantering i Flutter
+- Grundläggande användning av Docker 
+- Konfigurering av Nginx
 - Felsökning med Docker loggar
-- 
+- Hantering av alternativa format i NextJS, konverting av xml till JSON, hantering av videoformatet hls
 
 ## Licens
 
